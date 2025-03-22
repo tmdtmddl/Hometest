@@ -1,43 +1,57 @@
-import { useState } from "react";
+// import React from "react";
+
+// const App = () => {
+//   const todos = {
+//     one: "반복문 이해하기",
+//     two: "이해할겨?",
+//     title: "이해했음?",
+//   };
+
+//   for (const todo in todos) {
+//     console.log(todo); //one,two,title
+//   }
+//   return <div>App</div>;
+// };
+
+// export default App;
+// import React from "react";
+
+// const App = () => {
+//   const todos = ["반복문 이해하기", "이해할겨?", "이해했음?"];
+
+//   for (const todo in todos) {
+//     console.log(todo); //0,1,2
+//     console.log(`${todo}번째질문 ${todos[todo]}`);
+//     //0번째질문 반복문 이해하기1번째질문 이해할겨? 2번째질문 이해했음?
+//   }
+//   return <div>App</div>;
+// };
+
+// export default App;
+
+// import React from "react";
+
+// const App = () => {
+//   const todos = ["반복문 이해하기", "이해할겨?", "이해했음?"];
+
+//   for (const todo of todos) {
+//     console.log(todo); //"반복문 이해하기", "이해할겨?", "이해했음?"
+//   }
+//   return <div>App</div>;
+// };
+
+// export default App;
+import React from "react";
 
 const App = () => {
-  const [texts, setTexts] = useState<string[]>([]);
-  const [text, setText] = useState("");
+  const todos = ["반복문 이해하기", "이해할겨?", "이해했음?"];
 
-  return (
-    <div>
-      <form
-        action=""
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (text.length !== 0) {
-            setTexts((prev) => [...prev, text]);
-            return setText("");
-          }
-        }}
-      >
-        <label htmlFor="todo">todo</label>
-        <input
-          id="todo"
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <button>추가</button>
-      </form>
-      <ul>
-        {texts.map((text, index) => {
-          return (
-            <li key={index}>
-              <p>
-                {index + 1}.{text}
-              </p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+  todos.forEach(function (todo, index) {
+    console.log(`${index}번 ${todo}`);
+    // 0번 반복문 이해하기 1번 이해할겨? 2번 이해했음?
+  });
+
+  return <div>App</div>;
 };
 
 export default App;
