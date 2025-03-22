@@ -1,28 +1,43 @@
-import React from "react";
+import { useState } from "react";
 
 const App = () => {
-  const animal = "";
+  const [texts, setTexts] = useState<string[]>([]);
+  const [text, setText] = useState("");
 
-  // switch (기준이 될 비교 값) case 뒤에 값이 key의 값과 일치할때 안에 코드를 실행
-  // 일치하는 키값이 없으면 default뒤의 값 실행(default는 생략가능=>아무것도 실행 ㄴㄴ)
-  // break가있는 곳까지 실행
-
-  switch (animal) {
-    case "Cat":
-      console.log("야옹  ");
-      break;
-    case "Dog":
-      console.log("멍멍");
-      break;
-    case "Cow":
-      console.log("음메");
-      break;
-
-    default:
-      console.log("일치하는 동물소리가 없습니다.");
-      break;
-  }
-  return <div></div>;
+  return (
+    <div>
+      <form
+        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (text.length !== 0) {
+            setTexts((prev) => [...prev, text]);
+            return setText("");
+          }
+        }}
+      >
+        <label htmlFor="todo">todo</label>
+        <input
+          id="todo"
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button>추가</button>
+      </form>
+      <ul>
+        {texts.map((text, index) => {
+          return (
+            <li key={index}>
+              <p>
+                {index + 1}.{text}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 };
 
 export default App;
