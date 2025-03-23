@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AUTH } from "../context";
 
@@ -6,36 +6,54 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+
   const navi = useNavigate();
+
   const { signup } = AUTH.use();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const pwRef = useRef<HTMLInputElement>(null);
+  const checkpwRef = useRef<HTMLInputElement>(null);
+
   const onSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       if (email.length === 0) {
-        return alert("이메일을 입력해주세요.");
+        alert("이메일을 입력해주세요.");
+        return emailRef.current?.focus();
       }
       if (!email.includes("@")) {
-        return alert("@를 입력해주세요.");
+        alert("@를 입력해주세요.");
+        return emailRef.current?.focus();
       }
       if (!email.includes(".")) {
-        return alert(".를 입력해주세요.");
+        alert(".를 입력해주세요.");
+        return emailRef.current?.focus();
       }
       const split1 = email.split("@");
       if (split1[1].length === 0) {
-        return alert("@뒤를 입력해주세요.");
+        alert("@뒤를 입력해주세요.");
+        return emailRef.current?.focus();
       }
       const split2 = split1[1].split(".");
       if (split2[1].length === 0) {
-        return alert(".뒤를 작성해주세요.");
+        alert(".뒤를 작성해주세요.");
+        return emailRef.current?.focus();
       }
       if (split2[1].length - 1 === 0) {
-        return alert(".뒤를 작성해주세요.");
+        alert(".뒤를 작성해주세요.");
+        return emailRef.current?.focus();
       }
       if (password.length === 0) {
-        return alert("비밀번호를 입력해주세요.");
+        alert("비밀번호를 입력해주세요.");
+        return pwRef.current?.focus();
+      }
+      if (password.length > 16 || password.length < 8) {
+        alert("비밀번호는 8~16자 입니다");
+        return pwRef.current?.focus();
       }
       if (password !== checkPassword) {
-        return alert("비밀번호가 일치하지 않습니다.");
+        alert("비밀번호가 일치하지 않습니다.");
+        return checkpwRef.current?.focus();
       }
 
       //   유저가회원가입하고 데이터베이스에 저장
@@ -63,6 +81,7 @@ const Signup = () => {
         <div className="flex flex-col">
           <label htmlFor="email">이메일</label>
           <input
+            ref={emailRef}
             id="email"
             type="text"
             className="border bg-white "
@@ -75,6 +94,7 @@ const Signup = () => {
         <div className="flex flex-col">
           <label htmlFor="pw">비밀번호</label>
           <input
+            ref={pwRef}
             id="pw"
             type="password"
             value={password}
@@ -86,6 +106,7 @@ const Signup = () => {
         <div className="flex flex-col">
           <label htmlFor="cpw">비밀번호확인</label>
           <input
+            ref={checkpwRef}
             id="cpw"
             type="password"
             value={checkPassword}

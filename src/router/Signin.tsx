@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AUTH } from "../context";
 
@@ -8,32 +8,48 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navi = useNavigate();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const pwRef = useRef<HTMLInputElement>(null);
+  const { signin } = AUTH.use();
+  const eFocus = () => {
+    emailRef.current?.focus();
+  };
+  const pFocus = () => {
+    pwRef.current?.focus();
+  };
 
   const onSubmit = useCallback(
-    (e: FormEvent) => {
+    async (e: FormEvent) => {
       e.preventDefault();
       if (email.length === 0) {
-        return alert("이메일을 입력해주세요.");
+        alert("이메일을 입력해주세요.");
+        return eFocus();
       }
       if (!email.includes("@")) {
-        return alert("@를 입력해주세요.");
+        alert("@를 입력해주세요.");
+        return eFocus();
       }
       if (!email.includes(".")) {
-        return alert(".를 입력해주세요.");
+        alert(".를 입력해주세요.");
+        return eFocus();
       }
       const split1 = email.split("@");
       if (split1[1].length === 0) {
-        return alert("@뒤를 입력해주세요.");
+        alert("@뒤를 입력해주세요.");
+        return eFocus();
       }
       const split2 = split1[1].split(".");
       if (split2[1].length === 0) {
-        return alert(".뒤를 작성해주세요.");
+        alert(".뒤를 작성해주세요.");
+        return eFocus();
       }
       if (split2[1].length - 1 === 0) {
-        return alert(".뒤를 작성해주세요.");
+        alert(".뒤를 작성해주세요.");
+        return eFocus();
       }
       if (password.length === 0) {
-        return alert("비밀번호를 입력해주세요.");
+        alert("비밀번호를 입력해주세요.");
+        return pFocus();
       }
       if (!user) {
         alert("존재 ㄴㄴ");
@@ -43,13 +59,15 @@ const Signin = () => {
         return navi("/");
       }
 
-      alert("환영합니다.");
-      setEmail("");
-      setPassword("");
+      const { success, message } = await signin(email, password);
+      if (!success && message) {
+        return alert(message);
+      }
+      alert(`${user.email}님 환영합니다.`);
       navi("/product");
       return;
     },
-    [email, password, navi, user]
+    [email, password, navi, user, signin]
   );
   return (
     <form
@@ -61,6 +79,7 @@ const Signin = () => {
         <div className="flex flex-col">
           <label htmlFor="">이메일</label>
           <input
+            ref={emailRef}
             type="text"
             className="border bg-white "
             value={email}
@@ -72,6 +91,7 @@ const Signin = () => {
         <div className="flex flex-col">
           <label htmlFor="">비밀번호</label>
           <input
+            ref={pwRef}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

@@ -1,6 +1,6 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { AUTH } from ".";
-import { authService, db, FBCollection } from "../lib/firebase";
+import { AUTH } from "..";
+import { authService, db, FBCollection } from "../../lib/firebase";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState(AUTH.initialState.user);
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
     setUser(data);
   }, []);
-
+  //?
   useEffect(() => {
     const subscribe = authService.onAuthStateChanged((fbUser) => {
       if (!fbUser) {
@@ -30,6 +30,27 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
     return subscribe;
   }, [fetchUser]);
+
+  const signin = useCallback(
+    async (
+      email: string,
+      password: string
+    ): Promise<{ success?: boolean; message?: string }> => {
+      try {
+        const { user } = await authService.signInWithEmailAndPassword(
+          email,
+          password
+        );
+        if (user) {
+          await fetchUser(user.uid);
+        }
+      } catch (error: any) {
+        return { success: false, message: error.message };
+      }
+      return { success: true };
+    },
+    [fetchUser]
+  );
 
   const signup = useCallback(
     async (
@@ -59,7 +80,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 
   return (
-    <AUTH.Context.Provider value={{ user, initialized, signup }}>
+    <AUTH.Context.Provider value={{ user, initialized, signup, signin }}>
       {children}
     </AUTH.Context.Provider>
   );
