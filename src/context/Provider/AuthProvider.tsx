@@ -2,7 +2,7 @@ import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { AUTH } from "..";
 import { authService, db, FBCollection } from "../../lib/firebase";
 
-export const AuthProvider = ({ children }: PropsWithChildren) => {
+const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState(AUTH.initialState.user);
   const [initialized, setInitialized] = useState(false);
 
@@ -85,3 +85,5 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     </AUTH.Context.Provider>
   );
 };
+
+export default AuthProvider;
