@@ -6,7 +6,7 @@ import Accommodate from "./Accommodate.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* <App /> */}
-    <Accommodate />
+    <App />
+    {/* <Accommodate /> */}
   </StrictMode>
 );
