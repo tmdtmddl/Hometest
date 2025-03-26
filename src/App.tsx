@@ -110,24 +110,49 @@
 //     console.log(data);
 //   });
 
-fetch("https://jsonplaceholder.typicode.com/users")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error: any) => {
-    console.log("에러가 발생했습니다.");
-  })
-  .finally(() => {
-    console.log("마무리작업");
-  });
+// fetch("https://jsonplaceholder.typicode.com/users")
+//   .then((response) => {
+//     return response.json();
+//   })
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((error: any) => {
+//     console.log("에러가 발생했습니다.");
+//   })
+//   .finally(() => {
+//     console.log("마무리작업");
+//   });
 
+// async/await
+function networkRequest() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 2000);
+  });
+}
+async function getUser() {
+  await networkRequest();
+  return "별코딩";
+}
+
+async function getTodo() {
+  await networkRequest();
+  return ["청소하기", "밥먹기"];
+}
+async function getData() {
+  const user = await getUser();
+  // console.log(user);
+  const todo = await getTodo();
+  // console.log(todo);
+  console.log(`${user}님 ${todo}를 하세요.`);
+}
+getData();
 const App = () => {
   return (
     <div>
-      <button onClick={() => promise}>pomise</button>
+      <button>pomise</button>
     </div>
   );
 };
