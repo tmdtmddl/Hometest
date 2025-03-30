@@ -10,6 +10,15 @@
 //   setTimeout(() => {
 //     const data = null;
 
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useSearchParams,
+} from "react-router-dom";
+import Home from "./Home";
+import Button from "./Button";
+
 //     if (data) {
 //       console.log("네트워크 요청성공");
 //       resolve(data);
@@ -149,11 +158,17 @@ async function getData() {
   console.log(`${user}님 ${todo}를 하세요.`);
 }
 getData();
+
 const App = () => {
   return (
-    <div>
-      <button>pomise</button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route index Component={Home} />
+          <Route path="/button" Component={Button} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
