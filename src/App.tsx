@@ -1,95 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+"use client";
 
-const TimerBar = () => {
-  const duration = 10; // 총 시간 (초)
-  const [timeLeft, setTimeLeft] = useState(duration);
-  const [isRunning, setIsRunning] = useState(false); // 타이머 상태
-  const intervalRef = useRef<number | null>(null); // setInterval 참조
+import { useState } from "react";
 
-  useEffect(() => {
-    //만약 타이머가 멈춰 있는 상태면 아무 일도 하지 않고 종료(isRunning이 false면 실행할 필요가 없으니까)
-    if (!isRunning) {
-      return;
-    }
-    //1초마다 실행되는 타이머(setInterval)를 만들고, 그것을 intervalRef.current에 저장(이 참조는 나중에 정지하거나 초기화할 때 사용)
-    intervalRef.current = window.setInterval(() => {
-      setTimeLeft((prev) => {
-        //남은 시간이 1초 이하가 되면:타이머를 멈추고(clearInterval),isRunning을 false로 바꾸고 시간도 0으로 설정 => 이걸로 타이머가 자동으로 끝납니다.
-        if (prev <= 1) {
-          clearInterval(intervalRef.current!);
-          setIsRunning(false);
-          return 0;
-        }
-        //아직 시간이 남았으면 1초를 줄임
-        return prev - 1;
-      });
-      //위의 로직을 1초마다 실행
-    }, 1000);
+export default function Home() {
+  const [loading, setLoading] = useState(false);
 
-    return () => clearInterval(intervalRef.current!);
-  }, [isRunning]);
-  //! 일시정지
-  const handlePause = () => {
-    clearInterval(intervalRef.current!);
-    return setIsRunning(false);
-  };
-  //! 다시 시작 or 시작
-  const handleStart = () => {
-    if (timeLeft > 0) {
-      return setIsRunning(true);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLoading(true);
+
+      // 실제 업로드 API 연결 대신 타이머로 시뮬레이션
+      setTimeout(() => {
+        setLoading(false);
+        alert("업로드 완료!");
+      }, 3000);
     }
   };
-  //! 초기화
-  const handleReset = () => {
-    clearInterval(intervalRef.current!);
-    setTimeLeft(duration);
-    return setIsRunning(false);
-  };
-
-  const percentage = (timeLeft / duration) * 100;
 
   return (
-    <div className="p-4 max-w-md mx-auto space-y-4">
-      <p className="text-center text-lg font-bold">남은 시간: {timeLeft}초</p>
-      <div className="w-full h-4 bg-gray-300 rounded">
-        <div
-          className="h-full bg-green-500 rounded transition-all duration-1000"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <h1 className="text-2xl font-bold mb-4 border p-4 rounded-2xl bg-white">
+        동영상 업로드
+      </h1>
 
-      <div className="flex justify-center gap-2">
-        {!isRunning && (
-          <button
-            className="px-4 py-1 bg-blue-500 text-white rounded"
-            onClick={handleStart}
-          >
-            시작
-          </button>
-        )}
-        {isRunning && (
-          <button
-            className="px-4 py-1 bg-yellow-500 text-white rounded"
-            onClick={handlePause}
-          >
-            일시정지
-          </button>
-        )}
-        <button
-          className="px-4 py-1 bg-red-500 text-white rounded"
-          onClick={handleReset}
-        >
-          초기화
-        </button>
-      </div>
+      <input
+        type="file"
+        accept="video/*"
+        onChange={handleFileChange}
+        className="mb-4 border"
+      />
+
+      {loading && (
+        <div className="flex flex-col items-center">
+          <div className="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full" />
+          <p className="mt-2 text-gray-700">업로드 중 입니다...</p>
+        </div>
+      )}
     </div>
   );
-};
-
-export default TimerBar;
-
-//우리는 setInterval로 만든 타이머를 나중에 멈추기 위해 clearInterval()을 써야 하죠.
-
-// 함수로 쓰면 안되는 이유 const id = setInterval(...);clearInterval(id) => 리액트 함수형 컴포넌트는 상태가 바뀌면 TimerBar() 함수 전체가 다시 실행돼요.즉 이런 식이면 안 됩니다
-
-//해결책 : useRef는 값을 기억하지만 컴포넌트를 리렌더링하지는 않음 그래서 리렌더링이 되더라도 intervalRef.current에 저장된 값은 유지됨
+}
