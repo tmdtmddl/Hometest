@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Form from "./Todoform";
-import Item from "./TodoItem";
+import TodoForm from "./Todoform";
+import TodoItem from "./TodoItem";
 
 const App = () => {
   const [todos, setTodos] = useState<string[]>([]);
@@ -8,11 +8,11 @@ const App = () => {
   return (
     <div className=" flex flex-col justify-center items-center font-bold">
       <h1>todo list</h1>
-      <Form todos={todos} setTodos={setTodos} />
+      <TodoForm todos={todos} setTodos={setTodos} />
       <ul>
         {todos.map((todo, i) => {
           return (
-            <Item
+            <TodoItem
               key={i}
               setTodos={setTodos}
               todos={todos}
