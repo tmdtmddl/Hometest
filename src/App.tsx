@@ -1,23 +1,27 @@
 import { useState } from "react";
-import { twMerge } from "tailwind-merge";
+import Form from "./Todoform";
+import Item from "./TodoItem";
 
 const App = () => {
-  const [yes, setYes] = useState(false);
-  const swit = () => {
-    setYes(!yes);
-  };
+  const [todos, setTodos] = useState<string[]>([]);
 
   return (
-    <div>
-      <p
-        className={twMerge(
-          "font-bold cursor-pointer border-2",
-          yes ? "text-black" : "text-red-500"
-        )}
-        onClick={swit}
-      >
-        Test
-      </p>
+    <div className=" flex flex-col justify-center items-center font-bold">
+      <h1>todo list</h1>
+      <Form todos={todos} setTodos={setTodos} />
+      <ul>
+        {todos.map((todo, i) => {
+          return (
+            <Item
+              key={i}
+              setTodos={setTodos}
+              todos={todos}
+              index={i}
+              payload={todo}
+            />
+          );
+        })}
+      </ul>
     </div>
   );
 };
