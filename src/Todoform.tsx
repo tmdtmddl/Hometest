@@ -35,7 +35,7 @@ const TodoForm = ({ setTodos, todos }: FormProps) => {
       <input
         type="text"
         className="border cursor-pointer p-2 rounded-xl  outline-0"
-        placeholder="할일을 입력하세요!"
+        placeholder="메모를 입력하세요!"
         value={text}
         onChange={onChange}
         ref={ref}

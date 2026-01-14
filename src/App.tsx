@@ -6,8 +6,8 @@ const App = () => {
   const [todos, setTodos] = useState<string[]>([]);
 
   return (
-    <div className=" flex flex-col justify-center items-center font-bold">
-      <h1>todo list</h1>
+    <div className=" flex flex-col justify-center items-center font-bold gap-2">
+      <h1 className="text-3xl">파리바게트 알바 일지</h1>
       <TodoForm todos={todos} setTodos={setTodos} />
       <ul>
         {todos.map((todo, i) => {
