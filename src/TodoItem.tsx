@@ -19,13 +19,13 @@ const TodoItem = ({ index, payload, setTodos }: ItemProps) => {
   };
 
   return (
-    <li className="p-2 border rounded-xl my-2 flex justify-between items-center gap-4">
-      <div>
-        {index}.{payload}
+    <li className="p-3 border-2 hover:border-sky-700 rounded-xl my-2 flex justify-between items-center gap-4 max-w-lg">
+      <div className="flex-1 warp-break-words whitespace-normal">
+        {index + 1}. {payload}
       </div>
       <div>
         <button
-          className=" cursor-pointer hover:text-sky-600"
+          className="  hover:text-sky-600 text-red-400 font-bold cursor-pointer"
           onClick={todoDelete}
         >
           삭제

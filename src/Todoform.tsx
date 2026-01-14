@@ -34,7 +34,7 @@ const TodoForm = ({ setTodos, todos }: FormProps) => {
     <form className="flex" onSubmit={onSubmit}>
       <input
         type="text"
-        className=" border-2 border-r-0  border-sky-500 rounded-l-2xl cursor-pointer p-2   outline-0"
+        className=" border-2 border-r-0  border-sky-500 rounded-l-2xl cursor-pointer p-2   outline-0 min-w-lg"
         placeholder="메모를 입력하세요!"
         value={text}
         onChange={onChange}
