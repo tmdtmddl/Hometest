@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoForm from "./Todoform";
 import TodoItem from "./TodoItem";
 
 const App = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const loadTodos = () => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : []; // 로컬에 저장할 것임 (다시 들어와도 남아있게)
+  };
+
+  const [todos, setTodos] = useState<string[]>(loadTodos);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className=" flex flex-col justify-center items-center font-bold gap-2">
@@ -17,7 +26,7 @@ const App = () => {
               setTodos={setTodos}
               todos={todos}
               index={i}
-              payload={todo}
+              payload={todo} //payload라는 이름으로 todo를 넘겨줌
             />
           );
         })}

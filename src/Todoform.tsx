@@ -31,10 +31,10 @@ const TodoForm = ({ setTodos, todos }: FormProps) => {
   }, []);
 
   return (
-    <form className="flex gap-2" onSubmit={onSubmit}>
+    <form className="flex" onSubmit={onSubmit}>
       <input
         type="text"
-        className="border cursor-pointer p-2 rounded-xl  outline-0"
+        className=" border-2 border-r-0  border-sky-500 rounded-l-2xl cursor-pointer p-2   outline-0"
         placeholder="메모를 입력하세요!"
         value={text}
         onChange={onChange}
@@ -42,7 +42,7 @@ const TodoForm = ({ setTodos, todos }: FormProps) => {
       />
       <div>
         <button
-          className=" border-red-300 border-2 p-2 rounded-xl cursor-pointer"
+          className=" border-2 border-l-0 border-sky-500  p-2 rounded-r-2xl cursor-pointer"
           type="submit"
         >
           추가
