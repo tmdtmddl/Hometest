@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import TodoForm from "./Todoform";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface ItemProps {
   todos: string[];
@@ -45,10 +46,10 @@ const TodoItem = ({ index, payload, setTodos, todos }: ItemProps) => {
               className="  hover:text-sky-600 text-red-400 font-bold cursor-pointer"
               onClick={todoDelete}
             >
-              삭제
+              <FaTrashAlt />
             </button>
             <button
-              className="  hover:text-sky-600 text-blue-400 font-bold cursor-pointer"
+              className="  hover:text-sky-600 text-sky-400 font-bold cursor-pointer"
               onClick={todoSwtich}
             >
               수정

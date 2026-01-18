@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoForm from "./Todoform";
 import TodoItem from "./TodoItem";
+import { PiBreadFill } from "react-icons/pi";
 
 const App = () => {
   const loadTodos = () => {
@@ -15,8 +16,10 @@ const App = () => {
   }, [todos]);
 
   return (
-    <div className=" flex flex-col justify-center items-center font-bold gap-3">
-      <h1 className="text-3xl">파리바게트 알바 일지</h1>
+    <div className=" mt-2 flex flex-col justify-center items-center font-bold gap-3">
+      <div className="text-4xl flex items-center gap-2">
+        <PiBreadFill /> <p>파리바게트 알바 일지</p>
+      </div>
       <TodoForm todos={todos} setTodos={setTodos} />
       <ul>
         {todos.map((todo, i) => {

@@ -71,16 +71,18 @@ const TodoForm = ({
         onChange={onChange}
         ref={ref}
       />
-      <div>
+      <div className="flex items-center">
+        {/* 수정시에는 수정, 그냥 입력해서 하는경우에는 추가 */}
         <button
-          className=" border-2 border-l-0 border-sky-500  p-2 rounded-r-2xl cursor-pointer"
+          className=" border-2 border-l-0 border-sky-500 hover:text-sky-600  p-2 rounded-r-2xl cursor-pointer whitespace-nowrap"
           type="submit"
         >
           {todoEdit ? "수정" : "추가"}
         </button>
+
         {todoEdit && (
           <button
-            className=" ml-2 border-2 border-sky-500 p-2 rounded-2xl cursor-pointer"
+            className="p-2 cursor-pointer whitespace-nowrap text-gray-400 hover:text-sky-400"
             type="button"
             onClick={onCancel}
           >
