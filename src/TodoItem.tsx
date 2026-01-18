@@ -31,8 +31,8 @@ const TodoItem = ({ index, payload, setTodos, todos }: ItemProps) => {
         <TodoForm
           setTodos={setTodos}
           todos={todos}
-          payload={payload}
-          todoEdit={todoEdit}
+          payload={payload} //paylaod를 넘겨줘야 수정 가능
+          todoEdit={todoEdit} //수정용
           onCancel={todoSwtich} //TODO: 취소용
         />
       ) : (

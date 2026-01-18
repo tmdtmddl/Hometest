@@ -35,13 +35,14 @@ const TodoForm = ({
       let copy = [...prev]; //기존 할 일 목록을 그대로 복사 (복사해서 고치고 원본은 ㄴㄴ(prev=["a","b","c"], copy=["a","b","c"]))
 
       if (todoEdit) {
+        //! 수정모드일때
         const index = todos.findIndex((p) => p === payload); //고칠 대상이 몇 번째에 있는지 찾기 todos뒤지면서 payload랑 같은 것 찾기 찾으면 그 위치 index줌 (ex: index=1)
         if (index >= 0) {
           //index === -1 → 못 찾음 , index >= 0 → 찾음
-          copy[index] = todo; //!그 자리에 새 내용으로 교체 (copy=복사본,index는 위치에 있는 내용을 todo로 바꿔라)
+          copy[index] = todo; //!그 자리에 새 내용으로 교체 (copy=복사본,index는 위치에 있는 내용을 todo로 바꿔라),(index=1이면 copy[1]=todo)
         }
       } else {
-        copy.unshift(todo); //새 할 일을 맨 앞에 넣기
+        copy.unshift(todo); //없으면 새 할 일을 맨 앞에 넣기
       }
 
       return copy; //! 완성된 새 목록을 돌려줌 (이렇게 바꾼 결과를 이제 todos로 써주세요)
