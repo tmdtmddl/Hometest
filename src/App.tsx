@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TodoForm from "./Todoform";
 import TodoItem from "./TodoItem";
 import { PiBreadFill } from "react-icons/pi";
+import { IoIosSearch } from "react-icons/io";
 
 const App = () => {
   const loadTodos = () => {
@@ -11,18 +12,48 @@ const App = () => {
 
   const [todos, setTodos] = useState<string[]>(loadTodos);
 
+  const [keyword, setKeyword] = useState(""); // 검색에만 사용(폼 제출용은 아님)
+
+  const onChange = (e) => {
+    setKeyword(() => e.target.value);
+  };
+  const filteredTodos = todos.filter((todo) => todo.includes(keyword));
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
   return (
-    <div className=" mt-2 flex flex-col justify-center items-center font-bold gap-3">
-      <div className="text-4xl flex items-center gap-2">
+    <div className=" mt-4  flex flex-col justify-center items-center font-bold gap-3">
+      <div className="text-4xl flex items-center gap-2 ">
         <PiBreadFill /> <p>파리바게트 알바 일지</p>
       </div>
-      <TodoForm todos={todos} setTodos={setTodos} />
+      <div className="border-2 border-gray-300 bg-gray-50 p-3 rounded-2xl flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="search" className="text-sm text-gray-500">
+            검색
+          </label>
+          <div className="flex items-stretch min-w-lg rounded-2xl border-2 border-sky-300 bg-white overflow-hidden">
+            <input
+              type="text"
+              id="search"
+              placeholder="검색어 입력하세요"
+              className="flex-1 min-w-0 px-3 h-11 outline-0"
+              value={keyword}
+              onChange={onChange}
+            />
+
+            <div className="shrink-0 px-3 h-11 flex items-center justify-center">
+              <IoIosSearch className=" text-2xl text-gray-500" />
+            </div>
+          </div>
+        </div>
+
+        <TodoForm todos={todos} setTodos={setTodos} />
+      </div>
+
       <ul>
-        {todos.map((todo, i) => {
+        {filteredTodos.map((todo, i) => {
           return (
             <TodoItem
               key={i}

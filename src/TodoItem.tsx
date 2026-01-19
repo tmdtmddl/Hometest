@@ -27,7 +27,7 @@ const TodoItem = ({ index, payload, setTodos, todos }: ItemProps) => {
   };
 
   return (
-    <li className="p-3 border-2 hover:border-sky-700 rounded-xl my-2 flex justify-between items-center gap-4 max-w-xl min-w-xl hover:bg-sky-50">
+    <li className="p-3 border-2 border-gray-300 hover:border-sky-300 rounded-xl my-2 flex justify-between items-center gap-4 max-w-xl min-w-xl hover:bg-sky-50">
       {todoEdit ? (
         <TodoForm
           setTodos={setTodos}

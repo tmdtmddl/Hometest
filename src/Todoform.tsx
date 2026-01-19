@@ -62,33 +62,41 @@ const TodoForm = ({
   }, []);
 
   return (
-    <form className="flex" onSubmit={onSubmit}>
-      <input
-        type="text"
-        className=" border-2 border-r-0  border-sky-500 rounded-l-2xl cursor-pointer p-2   outline-0 min-w-lg"
-        placeholder="메모를 입력하세요!"
-        value={todo}
-        onChange={onChange}
-        ref={ref}
-      />
-      <div className="flex items-center">
-        {/* 수정시에는 수정, 그냥 입력해서 하는경우에는 추가 */}
-        <button
-          className=" border-2 border-l-0 border-sky-500 hover:text-sky-600  p-2 rounded-r-2xl cursor-pointer whitespace-nowrap"
-          type="submit"
-        >
-          {todoEdit ? "수정" : "추가"}
-        </button>
+    <form className="flex flex-col" onSubmit={onSubmit}>
+      <label htmlFor="todo" className="text-sm text-gray-500">
+        추가
+      </label>
+      <div className="flex items-stretch min-w-lg rounded-2xl border-2 border-sky-300 bg-white overflow-hidden ">
+        <input
+          type="text"
+          id="todo"
+          name="todo"
+          className=" flex-1 min-w-0 px-3 h-11 outline-0"
+          placeholder="메모를 입력하세요!"
+          value={todo}
+          onChange={onChange}
+          ref={ref}
+        />
 
-        {todoEdit && (
+        <div className="flex items-center">
+          {/* 수정시에는 수정, 그냥 입력해서 하는경우에는 추가 */}
           <button
-            className="p-2 cursor-pointer whitespace-nowrap text-gray-400 hover:text-sky-400"
-            type="button"
-            onClick={onCancel}
+            className=" shrink-0 px-3 h-11 flex items-center justify-center whitespace-nowrap text-gray-500 hover:text-sky-600 "
+            type="submit"
           >
-            취소
+            {todoEdit ? "수정" : "추가"}
           </button>
-        )}
+
+          {todoEdit && (
+            <button
+              className="shrink-0 px-3 h-11 flex items-center justify-center whitespace-nowrap text-gray-400 hover:text-sky-400"
+              type="button"
+              onClick={onCancel}
+            >
+              취소
+            </button>
+          )}
+        </div>
       </div>
     </form>
   );
