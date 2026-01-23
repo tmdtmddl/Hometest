@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface FormProps {
   todos: string[];
@@ -64,9 +65,14 @@ const TodoForm = ({
   return (
     <form className="flex flex-col" onSubmit={onSubmit}>
       <label htmlFor="todo" className="text-sm text-gray-500">
-        추가
+        {todoEdit ? "" : "추가"}
       </label>
-      <div className="flex items-stretch min-w-lg rounded-2xl border-2 border-sky-300 bg-white overflow-hidden ">
+      <div
+        className={twMerge(
+          "flex items-stretch min-w-lg rounded-2xl border-2 border-sky-300 bg-white overflow-hidden ",
+          todoEdit && "min-w-135"
+        )}
+      >
         <input
           type="text"
           id="todo"
