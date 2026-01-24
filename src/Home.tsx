@@ -37,8 +37,8 @@ const Home = () => {
         >
           <FaCalendarCheck />
         </button>
-        <div className="text-4xl flex items-center gap-2 text-gray-700">
-          <PiBreadFill /> <p>파리바게트 알바 일지</p>
+        <div className="text-4xl text-gray-700">
+          <p>아르바이트 일지</p>
         </div>
       </div>
 
