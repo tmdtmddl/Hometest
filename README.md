@@ -1,54 +1,27 @@
-# React + TypeScript + Vite
+# 개인 프로젝트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+알바일지 + 캘린더(월급계산)
 
-Currently, two official plugins are available:
+## 알바일지 (투두리스트)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. 투두리스트 형태
+2. 알바 주의할점만 적기
+3. 삭제, 수정, 추가 가능 (투두에 날짜는 기록 안함)
+4. 파이어베이스에 투두 저장
 
-## Expanding the ESLint configuration
+## 캘린더 컴포넌트
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. 출근한날은 색칠 / 안 나간날은 색칠 안함
+2. 인풋으로 몇 시간 일했는지 입력
+3. 마직막에 달마다 총 월급 계산
+4. 달마다 넘어가야 함
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## db는 firebase이용
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. 투두리스트 저장
+2. 출근날 저장
+   2-1. 출근날 몇시간 일했는지 저장
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Css
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+대표색상은 sky-400
