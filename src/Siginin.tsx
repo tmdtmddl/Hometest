@@ -1,7 +1,7 @@
 import React from "react";
 
-const Siginin = () => {
+const Signin = () => {
   return <div>개인 로그인 화면</div>;
 };
 
-export default Siginin;
+export default Signin;
