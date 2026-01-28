@@ -2,6 +2,7 @@ import { useState, useEffect, ReactNode } from "react";
 import { context } from "../contexts/context";
 import { auth, googleProvider } from "../firebase/firebase";
 import type { PromiseResult } from "../contexts/context";
+import type firebase from "firebase/compat/app";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<firebase.User | null>(null);
