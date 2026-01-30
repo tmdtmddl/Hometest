@@ -4,6 +4,7 @@ import { auth, googleProvider } from "../firebase/firebase";
 import type { PromiseResult } from "../contexts/context";
 import type firebase from "firebase/compat/app";
 
+// context.ts에서 정의(타입,초기값)한 걸 실제로 구현(파이어베이스연결과 실제 값제공)하는 곳
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<firebase.User | null>(null);
   const [initialized, setInitialized] = useState(false);
@@ -61,3 +62,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </context.Provider>
   );
 };
+
+// 여기서 중요한 것들:
+// context.Provider ← context 안에 들어있던 Provider를 꺼내 씀
+// value에 실제 값을 넣어줌 (초기값 대신 진짜 user, 진짜 함수들)
+
+//AuthProvider가 context.Provider 쓰고 있네
+// 그럼 AuthProvider의 value에 있는 실제 값 가져다줘야지
