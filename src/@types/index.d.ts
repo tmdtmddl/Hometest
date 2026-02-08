@@ -1,5 +1,5 @@
 interface Todo {
-  id: string;
+  id: string; // 나중에 삭제나 수정시 필요한 고유 id
   text: string;
 }
 

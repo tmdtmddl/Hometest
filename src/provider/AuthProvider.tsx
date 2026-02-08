@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [initialized, setInitialized] = useState(false);
   const [isPending, setIsPending] = useState(true);
 
+  console.log("user 확인용", user);
+
   // Firebase Auth 상태 감지
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((fbUser) => {

@@ -3,13 +3,16 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
+
+console.log(import.meta.env.VITE_FIREBASE_API_KEY);
 
 //  (파이어베이스를 중복으로 켜지 않게 막는 안전장치)
 if (!firebase.apps.length) {
@@ -22,3 +25,8 @@ export const googleProvider = new firebase.auth.GoogleAuthProvider(); //구글 �
 export const db = firebase.firestore(); //데이터 저장소를 꺼냄 (데이터를 저장하고 읽는 창고를 db로 준비)
 
 export default firebase; //firebase 자체를 통째로 쓰고 싶을 때를 대비한 내보내기 (ex.firebase.firestore.Timestamp)
+
+export enum FBCollection {
+  TODOS = "todos",
+  WORKDAYS = "workDays",
+}
