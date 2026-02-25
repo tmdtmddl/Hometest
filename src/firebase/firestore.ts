@@ -9,6 +9,11 @@ export const addTodo = async (
   text: string // 추가하는 todo내용
 ): Promise<string> => {
   // 함수 완료시 문자열함수 반환 (문자열 = 추가된 todo의 id)
+  // 가드: userId 체크!
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
+
   const todoRef = await db // db는 파이어베이스 / todoRef = 저장된 투두의 주소를 담는 상자
     .collection(`users/${userId}/${FBCollection.TODOS}`) // 추가시 사용할 컬렉션 경로
     .add({
@@ -20,6 +25,9 @@ export const addTodo = async (
 // Todo 목록 가져오기
 export const getTodos = async (userId: string): Promise<Todo[]> => {
   //Todo: userId를 받아서 Promise로 Todo 배열로 반환할 거임
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   const snapshot = await db // snapshot = 사진(현재 데이터의 스냅샷)
     .collection(`users/${userId}/${FBCollection.TODOS}`) // 특정 유저의 todos 컬렉션 경로
     .get(); // get() = 해당 컬렉션의 모든 문서 가져오기
@@ -37,6 +45,9 @@ export const updateTodo = async (
   todoId: string, // 어떤 todo인지
   newText: string // 수정할 내용
 ): Promise<void> => {
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   await db
     .collection(`users/${userId}/${FBCollection.TODOS}`) // 특정 유저의 todos 컬렉션 경로
     .doc(todoId) // 특정 todo 문서
@@ -51,6 +62,9 @@ export const deleteTodo = async (
   todoId: string // 어떤 todo를 삭제 구분
 ): Promise<void> => {
   // 비동기 함수 프로미스 반환 근데 반환값은 없다.
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   await db
     .collection(`users/${userId}/${FBCollection.TODOS}`) // 특정 투두 폴더 찾기
     .doc(todoId) // 특정 투두 문서를 찾기
@@ -67,6 +81,9 @@ export const setWorkDay = async (
   minutesWorked: number // 몇분 일했나
 ): Promise<void> => {
   // 반환값 없음
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   await db
     .collection(`users/${userId}/${FBCollection.WORKDAYS}`) // 특정 유저의 근무일 문서 찾기
     .doc(date) //특정 날짜 문서 찾기 (날짜는 하루만 존재하니까 id로 사용)
@@ -83,6 +100,9 @@ export const getWorkDays = async (
   yearMonth: string // 몇월의 데이터인가 (형식: "YYYY-MM")
 ): Promise<WorkDay[]> => {
   //! 함수 완료시 WorkDay 배열 봔환
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   const snapshot = await db // snapshot = 가져온 데이터 사진
     .collection(`users/${userId}/${FBCollection.WORKDAYS}`) // 특정 유저 근무일 폴더 찾기
     .where("date", ">=", `${yearMonth}-01`) //! where = 조건 걸어서 필터링 (date가 yearMonth-01보다 크거나 같고 yearMonth-31보다 작거나 같은 문서들만 가져오기!)
@@ -95,6 +115,9 @@ export const getWorkDays = async (
 //Todo: 전체 근무일 가져오기 (1년치 월급 계산시 필요: 통계)
 export const getAllWorkDays = async (userId: string): Promise<WorkDay[]> => {
   // 누구의 근무일인가 = userId (불러올 유저가 누구인지 구분위해)
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   const snapshot = await db
     .collection(`users/${userId}/${FBCollection.WORKDAYS}`) // 특정 유저의 근무일 폴더 찾기
     .get(); // 문서 가져오기 (전체니까 조건 없이 )
@@ -103,24 +126,40 @@ export const getAllWorkDays = async (userId: string): Promise<WorkDay[]> => {
 
 // ======= 시급 =======
 
-// 시급 저장
+// 시급 저장 함수
 export const setHourlyWage = async (
-  userId: string,
-  wage: number
+  userId: string, // 누구의 시급
+  wage: number // 시급이 얼마
 ): Promise<void> => {
+  //반환값없고 저장만 함
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   await db.collection(`users`).doc(userId).set(
+    // 없을 수도 있으니까 update가 아니라 set사용
+    // users 컬렉션에서 userId문서 찾기
     {
-      hourlyWage: wage,
+      hourlyWage: wage, // 저장할 데이터 (hourlyWage(시급얼마?) 필드에 wage(시급)값 저장)
     },
-    { merge: true } // 기존 데이터 유지하면서 업데이트
+    { merge: true } // 기존 데이터 유지하면서 업데이트 (덮어써서 없어지는 것 방지)
   );
 };
 
-// 시급 가져오기
+// 시급 가져오기 함수
 export const getHourlyWage = async (userId: string): Promise<number> => {
-  const doc = await db.collection(`users`).doc(userId).get();
-  const data = doc.data();
-  return data?.hourlyWage || 0; // 없으면 0 반환
+  // userId를 받아 숫자(시급)을 반환
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
+  const doc = await db.collection(FBCollection.USERS).doc(userId).get(); // .doc로 특정 문서 찾고 get으로 내용 가져온 정보를 변수 doc에 저장
+
+  // 문서가 없는 경우
+  if (!doc.exists) {
+    return 0; // 기본값 반환
+  }
+
+  const data = doc.data(); // doc.data로 실제 데이터만 꺼냄
+  return data?.hourlyWage || 0; // data에서 hourlyWage를 꺼내서 반환, 없으면 0 반환
 };
 
 // ==== 월급계산 ====
@@ -130,6 +169,9 @@ export const calculateMonthlySalary = async (
   userId: string,
   yearMonth: string // "2026-01"
 ): Promise<number> => {
+  if (!userId || userId.trim() === "") {
+    throw new Error("userId가 필요합니다!");
+  }
   // 1. 해당 월의 근무일 가져오기
   const workDays = await getWorkDays(userId, yearMonth);
 

@@ -27,6 +27,7 @@ export const db = firebase.firestore(); //데이터 저장소를 꺼냄 (데이�
 export default firebase; //firebase 자체를 통째로 쓰고 싶을 때를 대비한 내보내기 (ex.firebase.firestore.Timestamp)
 
 export enum FBCollection {
+  USERS = "users",
   TODOS = "todos",
   WORKDAYS = "workDays",
 }
