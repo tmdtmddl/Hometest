@@ -45,15 +45,25 @@ export const updateTodo = async (
   todoId: string, // 어떤 todo인지
   newText: string // 수정할 내용
 ): Promise<void> => {
+  // 예왜처리들
   if (!userId || userId.trim() === "") {
     throw new Error("userId가 필요합니다!");
   }
-  await db
-    .collection(`users/${userId}/${FBCollection.TODOS}`) // 특정 유저의 todos 컬렉션 경로
-    .doc(todoId) // 특정 todo 문서
-    .update({
-      text: newText, // 찾은 문서의 text를 newText로 바꾸기(업데이트), 일부만 수정 = update
-    });
+  if (!todoId || todoId.trim() === "") {
+    throw new Error("todoId가 필요합니다!");
+  }
+  if (!newText || newText.trim() === "") {
+    throw new Error("text가 필요합니다!");
+  }
+  try {
+    await db
+      .collection(`users/${userId}/${FBCollection.TODOS}`)
+      .doc(todoId)
+      .update({ text: newText });
+  } catch (error) {
+    console.error("투두 수정 실패:", error);
+    throw new Error("투두를 찾을 수 없거나 수정에 실패했습니다!");
+  }
 };
 
 // Todo 삭제
@@ -64,6 +74,9 @@ export const deleteTodo = async (
   // 비동기 함수 프로미스 반환 근데 반환값은 없다.
   if (!userId || userId.trim() === "") {
     throw new Error("userId가 필요합니다!");
+  }
+  if (!todoId || todoId.trim() === "") {
+    throw new Error("todoId가 필요합니다!");
   }
   await db
     .collection(`users/${userId}/${FBCollection.TODOS}`) // 특정 투두 폴더 찾기
@@ -78,7 +91,7 @@ export const setWorkDay = async (
   // 근무일 자장
   userId: string, //누구의 근무일
   date: string, // 언제 일했나
-  minutesWorked: number // 몇분 일했나
+  minutesWorked: number // 몇분 일했나 (분으로 저장해야 유연하고 정확해서 소수점 오류도 방지)
 ): Promise<void> => {
   // 반환값 없음
   if (!userId || userId.trim() === "") {
@@ -164,28 +177,32 @@ export const getHourlyWage = async (userId: string): Promise<number> => {
 
 // ==== 월급계산 ====
 
-// 특정 월의 총 월급 계산
+//Todo: 특정 월의 총 월급 계산
 export const calculateMonthlySalary = async (
-  userId: string,
-  yearMonth: string // "2026-01"
+  // 한 달 월급을 계산하는 함수
+  userId: string, // 누구의 월급인지
+  yearMonth: string // 몇월인지 ex) "2026-01"
 ): Promise<number> => {
+  // 숫자를 반환하는 비동기 함수
   if (!userId || userId.trim() === "") {
+    // userId가 없으면 안되니까 체크용 (가드)
     throw new Error("userId가 필요합니다!");
   }
   // 1. 해당 월의 근무일 가져오기
-  const workDays = await getWorkDays(userId, yearMonth);
+  const workDays = await getWorkDays(userId, yearMonth); //Todo: 특정월의 근무일을 getWorkDays함수로 가져오기 (누구이고 몇월이지 필요하니까 전달)
 
   // 2. 총 근무시간(분) 계산
   const totalMinutes = workDays.reduce((sum, day) => {
+    // reduce로 workDays배열의 값들을 하나로 합치기 (sum = 지금까지 합계(누적해서 계속 합치거나 더하기), day = 각 근무일) reduce는 누적인가?
     return sum + (day.minutesWorked || 0);
   }, 0);
 
   // 3. 시급 가져오기
-  const hourlyWage = await getHourlyWage(userId);
+  const hourlyWage = await getHourlyWage(userId); // 사용자가 설정해논 시급을 가져오는 함수 (누구 시급인지 구분 userId 전달)
 
   // 4. 월급 계산 (분 → 시간, 시간 × 시급)
-  const totalHours = totalMinutes / 60;
-  const salary = totalHours * hourlyWage;
+  const totalHours = totalMinutes / 60; // totalMinutes = 총 근무시간 (분으로 저장되어 있으니까 60으로 나눠서 시간으로 바꿔주기)
+  const salary = totalHours * hourlyWage; // 월급 계산 -> 시간 × 시급
 
-  return Math.round(salary); // 소수점 제거
+  return Math.round(salary); // 소수점 제거(반올림 함수) 돈은 소수점이 없으니까 반올림해서 정수로 변환해서 반환하기
 };
