@@ -2,8 +2,9 @@ import { useContext, createContext } from "react";
 import firebase from "firebase/compat/app";
 
 export type PromiseResult = {
-  success?: boolean;
-  error?: string;
+  //! 로그인이나 로그아웃함수가 성공인지 실패인지 알려줄려고 Promise를 반환하는 함수에 사용
+  success?: boolean; //성공했어? true/false
+  error?: string; //실패했으면 에러 메시지를 보내야 해서
 };
 
 // 1. Context 타입 정의
@@ -11,7 +12,7 @@ export interface Context {
   user: firebase.User | null; // 현재 로그인한 유저 (로그인 안했으면 null)
   initialized: boolean; // Firebase 초기화 완료 여부
   isPending: boolean; // 로딩 중인지
-  signInWithGoogle: () => Promise<PromiseResult>; // 구글 로그인 함수
+  signInWithGoogle: () => Promise<PromiseResult>; // 구글 로그인 함수 (시간이 걸리니까 promise 반환)
   signout: () => Promise<PromiseResult>; // 로그아웃 함수
 }
 // 2. 초기값 설정
