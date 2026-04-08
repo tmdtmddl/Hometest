@@ -35,3 +35,5 @@ export const useAuth = () => useContext(context); //어디서든 user, signInWit
 
 // context.ts          → 타입 정의만 (인터페이스), 전역 상태 저장소 역할임
 // AuthProvider.tsx    → 실제 구현 (Firebase 로직)
+
+// 다듬는 중 입니다.
